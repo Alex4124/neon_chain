@@ -2,7 +2,7 @@
 
 Визуально эффектная головоломка с неоновой эстетикой, созданная на PixiJS + TypeScript + Webpack.
 
-![Game Preview](preview.png)
+![Game Preview](https://alex4124.github.io/neon_chain/)
 
 ## 🌟 Особенности
 
@@ -101,12 +101,12 @@ MIT
 
 ## Deployment
 
-- `npm run deploy` � builds the project and publishes `dist` to the `gh-pages` branch using the `gh-pages` package.
+- `npm run deploy` � builds the project and publishes `dist` to the `gh-pages` branch using the `gh-pages` package.
 - Alternatively, push to `main` (or trigger the workflow manually) to let GitHub Actions build and deploy automatically via `.github/workflows/deploy.yml`.
 - Configure the repository on GitHub: Settings > Pages > Build and deployment > GitHub Actions.
 
 ## Quality Checks
 
-- `npm run lint` � static analysis for the TypeScript sources using ESLint + Prettier rules.
+- `npm run lint` � static analysis for the TypeScript sources using ESLint + Prettier rules.
 
 
