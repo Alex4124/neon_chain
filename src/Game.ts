@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
-import { BlurFilter } from '@pixi/filter-blur';
+import * as PIXI from "pixi.js";
+import { BlurFilter } from "@pixi/filter-blur";
 
 interface Orb {
   sprite: PIXI.Graphics;
@@ -22,11 +22,11 @@ export class NeonChainGame {
   private timeLeft: number = 60;
   private gameOver: boolean = false;
   private colors: number[] = [
-    0xFF1744, // Neon Red
-    0x00E5FF, // Neon Cyan
-    0xFFEA00, // Neon Yellow
-    0x76FF03, // Neon Green
-    0xE040FB, // Neon Purple
+    0xff1744, // Neon Red
+    0x00e5ff, // Neon Cyan
+    0xffea00, // Neon Yellow
+    0x76ff03, // Neon Green
+    0xe040fb, // Neon Purple
   ];
   private scoreText!: PIXI.Text;
   private timerText!: PIXI.Text;
@@ -79,13 +79,13 @@ export class NeonChainGame {
 
   private createUI() {
     // Score text
-    this.scoreText = new PIXI.Text('SCORE: 0', {
-      fontFamily: 'Arial',
+    this.scoreText = new PIXI.Text("SCORE: 0", {
+      fontFamily: "Arial",
       fontSize: 32,
-      fontWeight: 'bold',
-      fill: 0x00E5FF,
+      fontWeight: "bold",
+      fill: 0x00e5ff,
       dropShadow: true,
-      dropShadowColor: 0x00E5FF,
+      dropShadowColor: 0x00e5ff,
       dropShadowBlur: 10,
       dropShadowDistance: 0,
     });
@@ -93,13 +93,13 @@ export class NeonChainGame {
     this.app.stage.addChild(this.scoreText);
 
     // Timer text
-    this.timerText = new PIXI.Text('TIME: 60', {
-      fontFamily: 'Arial',
+    this.timerText = new PIXI.Text("TIME: 60", {
+      fontFamily: "Arial",
       fontSize: 32,
-      fontWeight: 'bold',
-      fill: 0xFF1744,
+      fontWeight: "bold",
+      fill: 0xff1744,
       dropShadow: true,
-      dropShadowColor: 0xFF1744,
+      dropShadowColor: 0xff1744,
       dropShadowBlur: 10,
       dropShadowDistance: 0,
     });
@@ -107,13 +107,13 @@ export class NeonChainGame {
     this.app.stage.addChild(this.timerText);
 
     // Combo text
-    this.comboText = new PIXI.Text('', {
-      fontFamily: 'Arial',
+    this.comboText = new PIXI.Text("", {
+      fontFamily: "Arial",
       fontSize: 48,
-      fontWeight: 'bold',
-      fill: 0xFFEA00,
+      fontWeight: "bold",
+      fill: 0xffea00,
       dropShadow: true,
-      dropShadowColor: 0xFFEA00,
+      dropShadowColor: 0xffea00,
       dropShadowBlur: 15,
       dropShadowDistance: 0,
     });
@@ -123,13 +123,13 @@ export class NeonChainGame {
     this.app.stage.addChild(this.comboText);
 
     // Title
-    this.titleText = new PIXI.Text('NEON CHAIN REACTION', {
-      fontFamily: 'Arial',
+    this.titleText = new PIXI.Text("NEON CHAIN REACTION", {
+      fontFamily: "Arial",
       fontSize: 24,
-      fontWeight: 'bold',
-      fill: 0xE040FB,
+      fontWeight: "bold",
+      fill: 0xe040fb,
       dropShadow: true,
-      dropShadowColor: 0xE040FB,
+      dropShadowColor: 0xe040fb,
       dropShadowBlur: 8,
       dropShadowDistance: 0,
     });
@@ -143,9 +143,13 @@ export class NeonChainGame {
     this.computeLayout();
 
     // Prepare color grid to bias neighbors and create clusters
-    this.gridColors = Array.from({ length: this.rows }, () => Array(this.cols).fill(-1));
+    this.gridColors = Array.from({ length: this.rows }, () =>
+      Array(this.cols).fill(-1),
+    );
     // Reset global color counters for more even distribution
-    this.colorCounts = new Map(this.colors.map((c) => [c, 0] as [number, number]));
+    this.colorCounts = new Map(
+      this.colors.map((c) => [c, 0] as [number, number]),
+    );
 
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
@@ -168,8 +172,12 @@ export class NeonChainGame {
     const top = row > 0 ? this.gridColors[row - 1][col] : undefined;
     const top2 = row > 1 ? this.gridColors[row - 2][col] : undefined;
     const top3 = row > 2 ? this.gridColors[row - 3][col] : undefined;
-    const diagL = row > 0 && col > 0 ? this.gridColors[row - 1][col - 1] : undefined;
-    const diagR = row > 0 && col < this.cols - 1 ? this.gridColors[row - 1][col + 1] : undefined;
+    const diagL =
+      row > 0 && col > 0 ? this.gridColors[row - 1][col - 1] : undefined;
+    const diagR =
+      row > 0 && col < this.cols - 1
+        ? this.gridColors[row - 1][col + 1]
+        : undefined;
 
     const entries: { color: number; weight: number }[] = [];
     for (const color of this.colors) {
@@ -190,7 +198,12 @@ export class NeonChainGame {
       if (diagR === color) w += 3;
 
       // If left and top are same and match this color — huge boost to grow the blob
-      if (left !== undefined && top !== undefined && left === top && left === color) {
+      if (
+        left !== undefined &&
+        top !== undefined &&
+        left === top &&
+        left === color
+      ) {
         w += 18;
       }
 
@@ -211,14 +224,21 @@ export class NeonChainGame {
     return entries[entries.length - 1].color;
   }
 
-  private createOrb(x: number, y: number, radius: number, color: number, col: number, row: number) {
+  private createOrb(
+    x: number,
+    y: number,
+    radius: number,
+    color: number,
+    col: number,
+    row: number,
+  ) {
     const orb = new PIXI.Graphics();
     orb.beginFill(color);
     orb.drawCircle(0, 0, radius);
     orb.endFill();
     orb.position.set(x, y);
     orb.interactive = true;
-    orb.cursor = 'pointer';
+    orb.cursor = "pointer";
 
     // Add blur filter to simulate glow
     const glowFilter = new BlurFilter(2, 1);
@@ -238,7 +258,7 @@ export class NeonChainGame {
       row,
     };
 
-    orb.on('pointerdown', () => this.onOrbClick(orbData));
+    orb.on("pointerdown", () => this.onOrbClick(orbData));
 
     this.orbs.push(orbData);
     this.app.stage.addChild(orb);
@@ -258,8 +278,8 @@ export class NeonChainGame {
         this.resizeRendererToWindow();
         this.layout();
       };
-      window.addEventListener('resize', this.onResizeHandler);
-      window.addEventListener('orientationchange', this.onResizeHandler);
+      window.addEventListener("resize", this.onResizeHandler);
+      window.addEventListener("orientationchange", this.onResizeHandler);
     }
   }
 
@@ -292,12 +312,15 @@ export class NeonChainGame {
     const bottomMargin = Math.max(16, Math.min(60, Math.round(height * 0.06)));
 
     // First pass: estimate spacing and radius
-    let gridWidthAvail = width - sideMargin * 2;
+    const gridWidthAvail = width - sideMargin * 2;
     let gridHeightAvail = height - (topMargin + bottomMargin);
-    let spacingX = gridWidthAvail / (this.cols - 1);
+    const spacingX = gridWidthAvail / (this.cols - 1);
     let spacingY = gridHeightAvail / (this.rows - 1);
     this.currentSpacing = Math.min(spacingX, spacingY);
-    this.currentOrbRadius = Math.max(12, Math.min(this.currentSpacing * 0.39, 60));
+    this.currentOrbRadius = Math.max(
+      12,
+      Math.min(this.currentSpacing * 0.39, 60),
+    );
 
     // Ensure orbs don't collide with the top UI: add enough margin for text + radius
     const uiHeight = Math.max(
@@ -311,7 +334,10 @@ export class NeonChainGame {
       gridHeightAvail = height - (topMargin + bottomMargin);
       spacingY = gridHeightAvail / (this.rows - 1);
       this.currentSpacing = Math.min(spacingX, spacingY);
-      this.currentOrbRadius = Math.max(12, Math.min(this.currentSpacing * 0.39, 60));
+      this.currentOrbRadius = Math.max(
+        12,
+        Math.min(this.currentSpacing * 0.39, 60),
+      );
     }
 
     const gridWidth = (this.cols - 1) * this.currentSpacing;
@@ -337,17 +363,23 @@ export class NeonChainGame {
       Math.round(this.app.screen.width - this.timerText.width - 20 * s),
       Math.round(20 * s),
     );
-    this.comboText.position.set(Math.round(this.app.screen.width / 2), Math.round(100 * s));
-    this.titleText.position.set(Math.round(this.app.screen.width / 2), Math.round(30 * s));
+    this.comboText.position.set(
+      Math.round(this.app.screen.width / 2),
+      Math.round(100 * s),
+    );
+    this.titleText.position.set(
+      Math.round(this.app.screen.width / 2),
+      Math.round(30 * s),
+    );
 
     // Pass 2: fonts changed -> recompute margins and grid
     this.computeLayout();
 
     // Orbs: position and scale to current radius
-    const targetScale = (this.currentOrbRadius / this.baseOrbRadius);
+    const targetScale = this.currentOrbRadius / this.baseOrbRadius;
     for (const orb of this.orbs) {
       // Skip destroyed sprites
-      if ((orb.sprite as any).destroyed) continue;
+      if (orb.sprite.destroyed) continue;
       const x = this.offsetX + orb.col * this.currentSpacing;
       const y = this.offsetY + orb.row * this.currentSpacing;
       orb.x = x;
@@ -607,13 +639,13 @@ export class NeonChainGame {
 
     // Game Over text
     const s = this.app.screen.width / 800;
-    const gameOverText = new PIXI.Text('GAME OVER', {
-      fontFamily: 'Arial',
+    const gameOverText = new PIXI.Text("GAME OVER", {
+      fontFamily: "Arial",
       fontSize: Math.max(32, Math.round(64 * s)),
-      fontWeight: 'bold',
-      fill: 0xFF1744,
+      fontWeight: "bold",
+      fill: 0xff1744,
       dropShadow: true,
-      dropShadowColor: 0xFF1744,
+      dropShadowColor: 0xff1744,
       dropShadowBlur: 20,
       dropShadowDistance: 0,
     });
@@ -623,12 +655,12 @@ export class NeonChainGame {
 
     // Final score
     const finalScore = new PIXI.Text(`FINAL SCORE: ${this.score}`, {
-      fontFamily: 'Arial',
+      fontFamily: "Arial",
       fontSize: Math.max(18, Math.round(36 * s)),
-      fontWeight: 'bold',
-      fill: 0x00E5FF,
+      fontWeight: "bold",
+      fill: 0x00e5ff,
       dropShadow: true,
-      dropShadowColor: 0x00E5FF,
+      dropShadowColor: 0x00e5ff,
       dropShadowBlur: 15,
       dropShadowDistance: 0,
     });
@@ -637,21 +669,39 @@ export class NeonChainGame {
     this.gameOverContainer.addChild(finalScore);
 
     // Restart button
-    this.createButton('RESTART', this.app.screen.width / 2, Math.round(350 * s), () => this.restart(), s);
+    this.createButton(
+      "RESTART",
+      this.app.screen.width / 2,
+      Math.round(350 * s),
+      () => this.restart(),
+      s,
+    );
 
     // Download button
-    this.createButton('DOWNLOAD', this.app.screen.width / 2, Math.round(450 * s), () => this.download(), s);
+    this.createButton(
+      "DOWNLOAD",
+      this.app.screen.width / 2,
+      Math.round(450 * s),
+      () => this.download(),
+      s,
+    );
   }
 
-  private createButton(text: string, x: number, y: number, onClick: () => void, scale: number = 1) {
+  private createButton(
+    text: string,
+    x: number,
+    y: number,
+    onClick: () => void,
+    scale: number = 1,
+  ) {
     const button = new PIXI.Container();
     button.position.set(x, y);
     button.interactive = true;
-    button.cursor = 'pointer';
+    button.cursor = "pointer";
 
     const bg = new PIXI.Graphics();
     bg.beginFill(0x1a1a1a);
-    bg.lineStyle(3, text === 'RESTART' ? 0x76FF03 : 0xE040FB);
+    bg.lineStyle(3, text === "RESTART" ? 0x76ff03 : 0xe040fb);
     bg.drawRoundedRect(-100, -30, 200, 60, 10);
     bg.endFill();
     button.addChild(bg);
@@ -660,10 +710,10 @@ export class NeonChainGame {
     bg.filters = [glowFilter];
 
     const buttonText = new PIXI.Text(text, {
-      fontFamily: 'Arial',
+      fontFamily: "Arial",
       fontSize: Math.max(14, Math.round(28 * scale)),
-      fontWeight: 'bold',
-      fill: text === 'RESTART' ? 0x76FF03 : 0xE040FB,
+      fontWeight: "bold",
+      fill: text === "RESTART" ? 0x76ff03 : 0xe040fb,
     });
     buttonText.anchor.set(0.5);
     button.addChild(buttonText);
@@ -671,12 +721,12 @@ export class NeonChainGame {
     const clampedScale = Math.max(0.6, Math.min(1.5, scale));
     button.scale.set(clampedScale);
 
-    button.on('pointerdown', onClick);
-    button.on('pointerover', () => {
+    button.on("pointerdown", onClick);
+    button.on("pointerover", () => {
       bg.scale.set(1.1);
       glowFilter.blur = 3;
     });
-    button.on('pointerout', () => {
+    button.on("pointerout", () => {
       bg.scale.set(1);
       glowFilter.blur = 1.5;
     });
@@ -700,7 +750,7 @@ export class NeonChainGame {
 
   private download() {
     // Open external site instead of downloading a screenshot
-    window.open('https://example.com', '_blank');
+    window.open("https://example.com", "_blank");
   }
 
   private startGameLoop() {
