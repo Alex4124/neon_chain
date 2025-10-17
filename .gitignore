@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+# Keep npm lockfile in repo for CI
+# If you switch to yarn/pnpm, adjust accordingly
+# yarn.lock
+
+# Build outputs
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
