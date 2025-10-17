@@ -107,8 +107,8 @@ MIT
 
 ## Quality Checks
 
-- `npm run lint` пїЅ static analysis for the TypeScript sources using ESLint + Prettier rules.
+- `npm run lint` static analysis for the TypeScript sources using ESLint + Prettier rules.
 
 
 
-Автор: Alim Kamavov
+Developed by Alim Kamavov
