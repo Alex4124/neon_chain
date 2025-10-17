@@ -2,7 +2,7 @@
 
 Визуально эффектная головоломка с неоновой эстетикой, созданная на PixiJS + TypeScript + Webpack.
 
-![Game Preview](https://alex4124.github.io/neon_chain/)
+[Game Preview](https://alex4124.github.io/neon_chain/)
 
 ## 🌟 Особенности
 
